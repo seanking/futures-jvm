@@ -1,13 +1,12 @@
 package com.rseanking.future
 
-import org.scalatest.WordSpec
-import org.scalatest.Matchers
-import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+import org.scalatest.Matchers
+import org.scalatest.WordSpec
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.time.{Millis, Seconds, Span}
-import scala.util.Success
-import scala.util.Failure
+import org.scalatest.time.{Seconds,Span}
 
 class FutureSpec extends WordSpec with Matchers with ScalaFutures {
   implicit val defaultPatience = PatienceConfig(timeout = Span(20, Seconds))
@@ -17,13 +16,12 @@ class FutureSpec extends WordSpec with Matchers with ScalaFutures {
       
       val expectMessage = "test message"
       
-      
-      val f = Future {
-        Thread.sleep(4000)
+      val futureMessage = Future {
+        Thread.sleep(1000L)
         expectMessage
       }
       
-      whenReady(f){ result =>
+      whenReady(futureMessage){ result =>
         result should equal(expectMessage)
       }
     }
